@@ -24,11 +24,11 @@ Alternatively, install and use [task-master](https://github.com/tandrewnichols/t
 
 ## The "git" task
 
-There are lots of other git plugins for grunt out there. In the past, I've always looked at them and though, "Why??? What's the value in wrapping git commands in grunt tasks?" Then I started working on my website, which is hosted on heroku, but includes dynamic content from the modules I've published, and I realized that I would like a way to easily grab updated READMEs and coverage files, copy them into my website, then stage, commit, and push them with git. The first part of that is easy: `grunt-contrib-copy` works perfectly for that, but then I wanted a simple interface for automating my git commands, and I wasn't satisfied with the grunt-git plugins out there. It seems like they all make more difficult than it should be. I wanted to be able to specify any git command as a task and pass any existing git option to it in an easy way. So that's what this plugin does.
+There are lots of other git plugins for grunt out there. In the past, I've always looked at them and thought, "Why??? What's the value in wrapping git commands in grunt tasks?" Then I started working on my website, which is hosted on heroku, but includes dynamic content from the modules I've published, and I realized that I would like a way to easily grab updated READMEs and coverage files, copy them into my website, then stage, commit, and push them with git. The first part of that is easy: `grunt-contrib-copy` works perfectly for that, but then I wanted a simple interface for automating my git commands, and I wasn't satisfied with the grunt-git plugins out there. It seems like they all make it more difficult than it should be. I wanted to be able to specify any git command as a task and pass any existing git option to it in an easy way. So that's what this plugin does.
 
 ### Overview
 
-The `git` task is a multiTask, where the target is (usually) the git command to run. You can configure as many git commands as are useful to you either in your `grunt.initConfig` call or, as mentioned above, by using [task-master](https://github.com/tandrewnichols/task-master). I strongly recommend using task-master . . . not just because I wrote it. I wrote it because grunt configuration is messy and annoying and sometimes, at least with `loadNpmTasks`, redundant (I was shocked to learn that you can't pass more than string to `loadNpmTasks` - it's plural . . . doesn't that mean I should be able to do `grunt.loadNpmTasks('grunt-foo', 'grunt-bar', 'grunt-baz')`? . . . apparently not). I've been using task-master for everything I write now for a few months, and it just makes grunt more pleasurable to use. Things are nicely separated . . . but I digress. Here's a sample configuration:
+The `git` task is a multiTask, where the target is (usually) the git command to run. You can configure as many git commands as are useful to you either in your `grunt.initConfig` call or, as mentioned above, by using [task-master](https://github.com/tandrewnichols/task-master). I strongly recommend using task-master . . . not just because I wrote it. I wrote it because grunt configuration is messy and annoying and sometimes, at least with `loadNpmTasks`, redundant (I was shocked to learn that you can't pass more than one string to `loadNpmTasks` - it's plural . . . doesn't that mean I should be able to do `grunt.loadNpmTasks('grunt-foo', 'grunt-bar', 'grunt-baz')`? . . . apparently not). I've been using task-master for everything I write now for a few months, and it just makes grunt more pleasurable to use. Things are nicely separated . . . but I digress. Here's a sample configuration:
 
 ```javascript
 grunt.initConfig({
@@ -85,7 +85,7 @@ grunt.initConfig({
 });
 ```
 
-Options that are just flags (i.e. they have value after them) are specified with `true`:
+Options that are just flags (i.e. they have no value after them) are specified with `true`:
 
 ```javascript
 grunt.initConfig({
