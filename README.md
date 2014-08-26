@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/tandrewnichols/grunt-simple-git.png)](https://travis-ci.org/tandrewnichols/grunt-simple-git) [![downloads](http://img.shields.io/npm/dm/grunt-simple-git.svg)](https://npmjs.org/package/grunt-simple-git) [![npm](http://img.shields.io/npm/v/grunt-simple-git.svg)](https://npmjs.org/package/grunt-simple-git) [![Code Climate](https://codeclimate.com/github/tandrewnichols/grunt-simple-git/badges/gpa.svg)](https://codeclimate.com/github/tandrewnichols/grunt-simple-git) [![Test Coverage](https://codeclimate.com/github/tandrewnichols/grunt-simple-git/badges/coverage.svg)](https://codeclimate.com/github/tandrewnichols/grunt-simple-git) [![dependencies](https://david-dm.org/tandrewnichols/grunt-simple-git.png)](https://david-dm.org/tandrewnichols/grunt-simple-git)
+
+[![NPM info](https://nodei.co/npm/grunt-simple-git.png?downloads=true)](https://nodei.co/npm/grunt-simple-git.png?downloads=true)
+
 # grunt-simple-git
 
 A simple API for using git via grunt
