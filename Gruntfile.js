@@ -25,7 +25,7 @@ module.exports = function(grunt) {
           require: 'coffee-script/register',
           output: 'coverage/coverage.lcov'
         },
-        src: ['test/**/*.coffee'],
+        src: ['test/helpers.coffee', 'test/**/*.coffee'],
       },
       html: {
         options: {
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
           require: 'coffee-script/register',
           output: 'coverage/coverage.html'
         },
-        src: ['test/**/*.coffee']
+        src: ['test/helpers.coffee', 'test/**/*.coffee']
       }
     },
     mochaTest: {
@@ -48,7 +48,34 @@ module.exports = function(grunt) {
       }
     },
     git: {
-
+      show: {
+        options: {
+          s: true
+        },
+        rawArgs: '--format=%s',
+        cmd: 'show 215ef76ca4fad42f8be29b3f7fcc0d91ca491ce3'
+      },
+      status: {},
+      makeBranch: {
+        cmd: 'branch foo'
+      },
+      branch: {
+        options: {
+          delete: 'foo'
+        }
+      },
+      revParse: {
+        options: {
+          abbrevRef: 'HEAD'
+        }
+      },
+      log: {
+        options: {
+          n: '1',
+          i: true,
+          'grep=': 'grunt-init'
+        }
+      }
     }
   });
 
