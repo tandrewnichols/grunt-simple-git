@@ -1,0 +1,42 @@
+{
+  "name": "grunt-simple-git",
+  "description": "Automate git tasks",
+  "version": "0.0.1",
+  "homepage": "https://github.com/tandrewnichols/grunt-simple-git",
+  "author": {
+    "name": "Andrew Nichols",
+    "email": "tandrewnichols@gmail.com",
+    "url": "www.tandrewnichols.me"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:tandrewnichols/grunt-simple-git.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tandrewnichols/grunt-simple-git/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/tandrewnichols/grunt-simple-git/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "^0.9.2",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-nodeunit": "^0.3.3",
+    "grunt": "~0.4.5"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.5"
+  },
+  "keywords": [
+    "gruntplugin"
+  ]
+}
