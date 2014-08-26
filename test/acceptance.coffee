@@ -7,6 +7,7 @@ describe 'acceptance', ->
     @grunt.on 'close', ->
       done()
   Then ->
+    console.log @output
     expect(@output).to.contain('Travis integration') and
     expect(@output).to.contain('# On branch master') and
     expect(@output).to.contain('Deleted branch foo') and
