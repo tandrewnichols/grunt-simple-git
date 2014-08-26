@@ -1,73 +1,57 @@
-/*
- * grunt-simple-git
- * https://github.com/tandrewnichols/grunt-simple-git
- *
- * Copyright (c) 2014 Andrew Nichols
- * Licensed under the MIT license.
- */
-
-'use strict';
-
 module.exports = function(grunt) {
-
-  // Project configuration.
-  grunt.initConfig({
-    jshint: {
-      all: [
-        'Gruntfile.js',
-        'tasks/*.js',
-        '<%= nodeunit.tests %>'
-      ],
-      options: {
-        jshintrc: '.jshintrc'
-      }
-    },
-
-    // Before generating any new files, remove any previously-created files.
-    clean: {
-      tests: ['tmp']
-    },
-
-    // Configuration to be run (and then tested).
-    simple_git: {
-      default_options: {
-        options: {
-        },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
-      },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!'
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
-        }
-      }
-    },
-
-    // Unit tests.
-    nodeunit: {
-      tests: ['test/*_test.js']
-    }
-
-  });
-
-  // Actually load this plugin's task(s).
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-mocha-cov');
   grunt.loadTasks('tasks');
 
-  // These plugins provide necessary tasks.
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.initConfig({
+    jshint: {
+      all: [ 'tasks/*.js' ],
+      options: {
+        reporter: require('jshint-stylish'),
+        eqeqeq: true,
+        es3: true,
+        indent: 2,
+        newcap: true,
+        quotmark: 'single'
+      }
+    },
+    mochacov: {
+      lcov: {
+        options: {
+          reporter: 'mocha-lcov-reporter',
+          instrument: true,
+          ui: 'mocha-given',
+          require: 'coffee-script/register',
+          output: 'coverage/coverage.lcov'
+        },
+        src: ['test/**/*.coffee'],
+      },
+      html: {
+        options: {
+          reporter: 'html-cov',
+          ui: 'mocha-given',
+          require: 'coffee-script/register',
+          output: 'coverage/coverage.html'
+        },
+        src: ['test/**/*.coffee']
+      }
+    },
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec',
+          ui: 'mocha-given',
+          require: 'coffee-script/register'
+        },
+        src: ['test/helpers.coffee', 'test/**/*.coffee']
+      }
+    },
+    git: {
 
-  // Whenever the "test" task is run, first clean the "tmp" dir, then run this
-  // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'simple_git', 'nodeunit']);
+    }
+  });
 
-  // By default, lint and run all tests.
-  grunt.registerTask('default', ['jshint', 'test']);
-
+  grunt.registerTask('mocha', ['mochaTest:test']);
+  grunt.registerTask('default', ['jshint:all', 'mocha']);
 };
