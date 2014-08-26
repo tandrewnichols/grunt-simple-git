@@ -27,10 +27,14 @@
   "scripts": {
     "test": "grunt"
   },
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "underscore.string": "^2.3.3"
+  },
   "devDependencies": {
     "coffee-script": "^1.7.1",
     "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.9.2",
+    "grunt-contrib-jshint": "^0.10.0",
     "grunt-mocha-cov": "^0.3.0",
     "grunt-mocha-test": "^0.11.0",
     "indeed": "^1.0.6",
@@ -42,16 +46,13 @@
     "sinon": "^1.10.3"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin", "git", "deploy"
   ],
-  "dependencies": {
-    "lodash": "^2.4.1",
-    "underscore.string": "^2.3.3"
-  },
+  "main": "./tasks/git.js",
   "config": {
     "blanket": {
       "pattern": [
-        "kindly/lib"
+        "grunt-simple-git/tasks"
       ]
     }
   }

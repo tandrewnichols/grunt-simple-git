@@ -6,7 +6,6 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     jshint: {
-      all: [ 'tasks/*.js' ],
       options: {
         reporter: require('jshint-stylish'),
         eqeqeq: true,
@@ -14,7 +13,8 @@ module.exports = function(grunt) {
         indent: 2,
         newcap: true,
         quotmark: 'single'
-      }
+      },
+      all: ['tasks/*.js']
     },
     mochacov: {
       lcov: {
@@ -25,7 +25,7 @@ module.exports = function(grunt) {
           require: 'coffee-script/register',
           output: 'coverage/coverage.lcov'
         },
-        src: ['test/helpers.coffee', 'test/**/*.coffee'],
+        src: ['test/helpers.coffee', 'test/**/*.coffee', '!test/acceptance.coffee'],
       },
       html: {
         options: {
@@ -34,16 +34,16 @@ module.exports = function(grunt) {
           require: 'coffee-script/register',
           output: 'coverage/coverage.html'
         },
-        src: ['test/helpers.coffee', 'test/**/*.coffee']
+        src: ['test/helpers.coffee', 'test/**/*.coffee', '!test/acceptance.coffee']
       }
     },
     mochaTest: {
+      options: {
+        reporter: 'spec',
+        ui: 'mocha-given',
+        require: 'coffee-script/register'
+      },
       test: {
-        options: {
-          reporter: 'spec',
-          ui: 'mocha-given',
-          require: 'coffee-script/register'
-        },
         src: ['test/helpers.coffee', 'test/**/*.coffee']
       }
     },
