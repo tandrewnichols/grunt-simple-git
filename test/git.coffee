@@ -16,6 +16,7 @@ describe 'git', ->
 
   When -> @subject(@grunt)
   And -> expect(@grunt.registerMultiTask).to.have.been.calledWith 'git', 'A simple API for using git via grunt', sinon.match.func
+  And -> @task = @grunt.registerMultiTask.getCall(0).args[2]
 
   describe 'command with git options', ->
     Given -> @emitter = new EventEmitter()
@@ -24,7 +25,7 @@ describe 'git', ->
     Given -> @context.options.returns
       message: 'A commit message'
     When ->
-      @grunt.registerMultiTask.getCall(0).args[2].apply @context, []
+      @task.apply @context, []
       @emitter.emit 'close', 0
     Then -> expect(@cb).to.have.been.called
 
@@ -35,7 +36,7 @@ describe 'git', ->
     Given -> @context.options.returns
       short: true
     When ->
-      @grunt.registerMultiTask.getCall(0).args[2].apply @context, []
+      @task.apply @context, []
       @emitter.emit 'close', 0
     Then -> expect(@cb).to.have.been.called
 
@@ -49,7 +50,7 @@ describe 'git', ->
       c: true
       d: 'bar'
     When ->
-      @grunt.registerMultiTask.getCall(0).args[2].apply @context, []
+      @task.apply @context, []
       @emitter.emit 'close', 0
     Then -> expect(@cb).to.have.been.called
 
@@ -63,7 +64,7 @@ describe 'git', ->
       stdio: 'foo'
       cwd: 'bar'
     When ->
-      @grunt.registerMultiTask.getCall(0).args[2].apply @context, []
+      @task.apply @context, []
       @emitter.emit 'close', 0
     Then -> expect(@cb).to.have.been.called
 
@@ -74,7 +75,7 @@ describe 'git', ->
     Given -> @context.data =
       cmd: 'remote show origin'
     When ->
-      @grunt.registerMultiTask.getCall(0).args[2].apply @context, []
+      @task.apply @context, []
       @emitter.emit 'close', 0
     Then -> expect(@cb).to.have.been.called
 
@@ -85,7 +86,7 @@ describe 'git', ->
     Given -> @context.data =
       cmd: 'git remote show origin'
     When ->
-      @grunt.registerMultiTask.getCall(0).args[2].apply @context, []
+      @task.apply @context, []
       @emitter.emit 'close', 0
     Then -> expect(@cb).to.have.been.called
 
@@ -96,7 +97,7 @@ describe 'git', ->
     Given -> @context.data =
       cmd: 'remote show origin'
     When ->
-      @grunt.registerMultiTask.getCall(0).args[2].apply @context, []
+      @task.apply @context, []
       @emitter.emit 'close', 0
     Then -> expect(@cb).to.have.been.called
 
@@ -107,7 +108,7 @@ describe 'git', ->
     Given -> @context.options.returns
       useDashes: true
     When ->
-      @grunt.registerMultiTask.getCall(0).args[2].apply @context, []
+      @task.apply @context, []
       @emitter.emit 'close', 0
     Then -> expect(@cb).to.have.been.called
 
@@ -118,7 +119,7 @@ describe 'git', ->
     Given -> @context.data =
       rawArgs: '--format=%s'
     When ->
-      @grunt.registerMultiTask.getCall(0).args[2].apply @context, []
+      @task.apply @context, []
       @emitter.emit 'close', 0
     Then -> expect(@cb).to.have.been.called
 
@@ -129,7 +130,7 @@ describe 'git', ->
     Given -> @context.data =
       rawArgs: ['---blah^foo hi']
     When ->
-      @grunt.registerMultiTask.getCall(0).args[2].apply @context, []
+      @task.apply @context, []
       @emitter.emit 'close', 0
     Then -> expect(@cb).to.have.been.called
 
@@ -140,6 +141,6 @@ describe 'git', ->
     Given -> @context.options.returns
       'author=': 'nichols'
     When ->
-      @grunt.registerMultiTask.getCall(0).args[2].apply @context, []
+      @task.apply @context, []
       @emitter.emit 'close', 0
     Then -> expect(@cb).to.have.been.called
