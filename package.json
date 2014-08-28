@@ -28,8 +28,7 @@
     "test": "grunt"
   },
   "dependencies": {
-    "lodash": "^2.4.1",
-    "underscore.string": "^2.3.3"
+    "simple-cli": "0.0.1"
   },
   "devDependencies": {
     "coffee-script": "^1.7.1",
@@ -46,7 +45,9 @@
     "sinon": "^1.10.3"
   },
   "keywords": [
-    "gruntplugin", "git", "deploy"
+    "gruntplugin",
+    "git",
+    "deploy"
   ],
   "main": "./tasks/git.js",
   "config": {
