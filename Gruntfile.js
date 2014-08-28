@@ -88,7 +88,7 @@ module.exports = function(grunt) {
       }
     },
     matrix: {
-      'v0.10': 'codeclimate < coverage/coverage.html'
+      'v0.10': 'codeclimate < coverage/coverage.lcov'
     }
   });
 
