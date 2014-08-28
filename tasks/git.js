@@ -11,7 +11,7 @@ module.exports = function(grunt) {
     var nonFlag = [];
 
     // Build out git options
-    var gitOptions = _.chain(options).keys().reduce(function(memo, key) {
+    var gitOptions = _(options).omit('cwd', 'stdio', 'force').keys().reduce(function(memo, key) {
       // Allow short options
       if (key.length === 1) {
         if (options[key] === true) flag.push(key);
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
         }
       }
       return memo;
-    }, []).value();
+    }, []);
 
     // Collect short options
     if (flag.length) gitOptions.push('-' + flag.join(''));
@@ -45,9 +45,29 @@ module.exports = function(grunt) {
     if (this.data.rawArgs) gitOptions = gitOptions.concat(this.data.rawArgs);
     
     // Create git process
-    var gitCmd = cp.spawn('git', [target].concat(gitOptions), { stdio: this.data.stdio || 'inherit', cwd: this.data.cwd || '.' });
-    gitCmd.on('close', function(code) {
-      done();
-    });
+    var opts = { cwd: options.cwd || process.cwd(), stdio: options.stdio || 'inherit' };
+    if (options.stdio === false) delete opts.stdio; 
+    var gitCmd = cp.spawn('git', [target].concat(gitOptions), opts);
+
+    // Listen if we have emitters and stdio is not false
+    if (gitCmd.stdout && options.stdio !== false) {
+      gitCmd.stdout.on('data', function(data) {
+        grunt.log.writeln(data.toString());
+      });
+    }
+    if (gitCmd.stderr && options.stdio !== false) {
+      gitCmd.stderr.on('data', function(data) {
+        grunt.log.writeln(data.toString());
+      });
+    }
+
+    gitCmd.on('close', (function(__this) {
+      return function(code) {
+        if (options.force && code) {
+          grunt.log.writeln('git:' + __this.target + ' returned code ' + code + '. Ignoring...');
+          done(0);
+        } else done(code);
+      };
+    })(this));
   });
 };

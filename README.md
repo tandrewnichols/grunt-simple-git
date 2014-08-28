@@ -165,13 +165,14 @@ grunt.initConfig({
 });
 ```
 
-There are also a few non-git related options, specifcally `stdio` and `cwd` which are passed as is to `child_process.spawn` (defaults are `inherit` and `.` respectivly). These are under `options` so that they can be specified for all tasks if desired:
+There are also a few non-git related options: `stdio` and `cwd` which are passed as is to `child_process.spawn` (defaults are `inherit` and `process.cwd()` respectivly) and `force`, which you can use for non-critical git commands that should not halt the grunt task chain (like `--force` but on a per task basis). These are under `options` so that they can be specified for all tasks if desired. If you want to turn off `stdio` altogether (which you probably shouldn't do), you can pass `stdio: false`.
 
 ```javascript
 grunt.initConfig({
   git: {
     options: {
-      cwd: '..'
+      cwd: '..',
+      stdio: false
     },
     add: {
       options: {
