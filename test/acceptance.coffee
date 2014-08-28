@@ -10,7 +10,9 @@ describe 'acceptance', ->
   Then ->
     console.log @output
     expect(@output).to.contain('Travis integration') and
-    expect(@output).to.contain(if travis then '# HEAD detached at' else '# On branch master') and
+    (expect(@output).to.contain('# HEAD detached at') or
+    expect(@output).to.contain('# Not currently on any branch') or
+    expect(@output).to.contain('# On branch master')) and
     expect(@output).to.contain('Deleted branch foo') and
     expect(@output).to.contain(if travis then 'HEAD' else 'master') and
     expect(@output).to.contain('Geez')
