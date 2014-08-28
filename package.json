@@ -26,7 +26,7 @@
   },
   "scripts": {
     "test": "grunt",
-    "publish": "if [[ $USER == anichols ]]; then publisher run; fi"
+    "publish": "if echo $USERNAME | grep -cq 'anichols'; then publisher run; fi"
   },
   "dependencies": {
     "simple-cli": "0.0.1"
