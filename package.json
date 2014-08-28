@@ -25,7 +25,8 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "publish": "if [[ $USER == anichols ]]; then publisher run; fi"
   },
   "dependencies": {
     "simple-cli": "0.0.1"
