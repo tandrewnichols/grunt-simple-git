@@ -151,6 +151,16 @@ grunt.initConfig({
 });
 ```
 
+Additionally, if `cmd` is the configuration you need, you can pass that as the entirety of the task body:
+
+```javascript
+grunt.initConfig({
+  git: {
+    push: 'push origin master'
+  }
+});
+```
+
 Finally, if your usage doesn't fit these formats, you can specify raw arguments to pass to git using the `rawArgs` option:
 
 ```javascript
