@@ -2,7 +2,7 @@
   "name": "grunt-simple-git",
   "description": "A simple API for using git via grunt",
   "version": "0.1.0",
-  "homepage": "https://github.com/tandrewnichols/grunt-simple-git",
+  "homepage": "http://www.tandrewnichols.me/modules/grunt-simple-git",
   "author": {
     "name": "Andrew Nichols",
     "email": "tandrewnichols@gmail.com",
