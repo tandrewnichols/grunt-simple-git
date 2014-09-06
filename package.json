@@ -1,7 +1,7 @@
 {
   "name": "grunt-simple-git",
   "description": "A simple API for using git via grunt",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "homepage": "https://github.com/tandrewnichols/grunt-simple-git",
   "author": {
     "name": "Andrew Nichols",
