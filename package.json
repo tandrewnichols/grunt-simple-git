@@ -29,7 +29,7 @@
     "publish": "if echo $USERNAME | grep -cq 'anichols'; then publisher run; fi"
   },
   "dependencies": {
-    "simple-cli": "0.0.1"
+    "simple-cli": "^0.1.0"
   },
   "devDependencies": {
     "coffee-script": "^1.7.1",
