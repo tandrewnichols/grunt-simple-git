@@ -24,7 +24,7 @@ Alternatively, install and use [task-master](https://github.com/tandrewnichols/t
 
 ## The "git" task
 
-There are lots of other git plugins for grunt out there. In the past, I've always looked at them and thought, "Why??? What's the value in wrapping git commands in grunt tasks?" Then I started working on my website, which is hosted on heroku, but includes dynamic content from the modules I've published, and I realized that I would like a way to easily grab updated READMEs and coverage files, copy them into my website, then stage, commit, and push them with git. The first part of that is easy: `grunt-contrib-copy` works perfectly for that, but then I wanted a simple interface for automating my git commands, and I wasn't satisfied with the grunt-git plugins out there. It seems like they all make it more difficult than it should be. I wanted to be able to specify any git command as a task and pass any existing git option to it in an easy way. So that's what this plugin does.
+This plugin uses the [simple-cli](https://github.com/tandrewnichols/simple-cli) interface, so any of the options avaiable there will work with this plugin. A summary of the more salient points are included below.
 
 ### Overview
 
