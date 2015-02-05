@@ -51,30 +51,72 @@ module.exports = function(grunt) {
     git: {
       show: {
         options: {
-          s: true
-        },
-        rawArgs: '--format=%s',
-        cmd: 'show 215ef76ca4fad42f8be29b3f7fcc0d91ca491ce3'
+          s: true,
+          simple: {
+            rawArgs: '--format=%s',
+            args: '215ef76ca4fad42f8be29b3f7fcc0d91ca491ce3',
+            onComplete: function(err, stdout, callback) {
+              console.log(stdout);
+              callback();
+            }
+          }
+        }
       },
-      status: {},
+      status: {
+        options: {
+          simple: {
+            onComplete: function(err, stdout, callback) {
+              console.log(stdout);
+              callback();
+            }
+          }
+        }
+      },
       makeBranch: {
-        cmd: 'branch foo'
+        options: {
+          simple: {
+            cmd: 'branch',
+            args: 'foo',
+            onComplete: function(err, stdout, callback) {
+              console.log(stdout);
+              callback();
+            }
+          }
+        }
       },
       branch: {
         options: {
-          delete: 'foo'
+          delete: 'foo',
+          simple: {
+            onComplete: function(err, stdout, callback) {
+              console.log(stdout);
+              callback();
+            }
+          }
         }
       },
       revParse: {
         options: {
-          abbrevRef: 'HEAD'
+          abbrevRef: 'HEAD',
+          simple: {
+            onComplete: function(err, stdout, callback) {
+              console.log(stdout);
+              callback();
+            }
+          }
         }
       },
       log: {
         options: {
           n: '1',
           i: true,
-          'grep=': 'grunt-init'
+          'grep=': 'grunt-init',
+          simple: {
+            onComplete: function(err, stdout, callback) {
+              console.log(stdout);
+              callback();
+            }
+          }
         }
       }
     },

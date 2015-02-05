@@ -25,11 +25,10 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt",
-    "publish": "if echo $USERNAME | grep -cq 'anichols'; then publisher run; fi"
+    "test": "grunt"
   },
   "dependencies": {
-    "simple-cli": "^0.1.0"
+    "simple-cli": "^1.0.0"
   },
   "devDependencies": {
     "coffee-script": "^1.7.1",
