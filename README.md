@@ -28,173 +28,381 @@ This plugin uses the [simple-cli](https://github.com/tandrewnichols/simple-cli) 
 
 ### Overview
 
-The `git` task is a multiTask, where the target is (usually) the git command to run. You can configure as many git commands as are useful to you either in your `grunt.initConfig` call or, as mentioned above, by using [task-master](https://github.com/tandrewnichols/task-master). I strongly recommend using task-master . . . not just because I wrote it. I wrote it because grunt configuration is messy and annoying and sometimes, at least with `loadNpmTasks`, redundant (I was shocked to learn that you can't pass more than one string to `loadNpmTasks` - it's plural . . . doesn't that mean I should be able to do `grunt.loadNpmTasks('grunt-foo', 'grunt-bar', 'grunt-baz')`? . . . apparently not). I've been using task-master for everything I write now for a few months, and it just makes grunt more pleasurable to use. Things are nicely separated . . . but I digress. Here's a sample configuration:
+The `git` task is a multiTask, where the target is (usually) the git command to run. Options to git can be supplied in the options object, and there are various options supported by the library itself which must be under `options.simple`.
 
-```javascript
+### Git Options
+
+Generally speaking, options are supplied as camel-cased equivalents of the command line options. Specifically, you can do any/all of the following:
+
+#### Long options
+
+```js
+grunt.initConfig({
+  git: {
+    commit: {
+      options: {
+        message: '"Fix stuff"'
+      }
+    }
+  }
+});
+```
+
+This will run `git commit --message "Fix stuff"`
+
+#### Boolean options
+
+```js
 grunt.initConfig({
   git: {
     status: {
       options: {
         short: true
       }
-    },
-    add: {
-      options: {
-        all: true
-      }
-    },
-    commit: {
-      options: {
-        message: 'Automated commit'
-      }
-    },
-    pushToOrigin: {
-      cmd: 'push origin master'
-    },
-    pushToHeroku: {
-      cmd: 'push heroku master'
-    }
-  },
-});
-```
-
-Then add an alias task to bundle them into one thing. I use something like this:
-
-```javascript
-grunt.registerTask('deploy', ['copy', 'git:add', 'git:commit', 'git:pushToOrigin', 'git:pushToHeroku']);
-```
-
-Now I simply run `grunt deploy` from the command line and all my readmes and coverage files are copied, staged, committed, and pushed automatically.
-
-### Options
-
-Any git option can be specified, though there are some variations. Any long or short option can be specified using camelCase notation (it will be converted to dash notation):
-
-```javascript
-grunt.initConfig({
-  git: {
-    log: {
-      // Short option - Runs 'git log -n 2'
-      n: 2
-    },
-    commit: {
-      // Long option - Runs 'git commit --message "A message"'
-      message: 'A message'
     }
   }
 });
 ```
 
-Options that are just flags (i.e. they have no value after them) are specified with `true`:
+This will run `git status --short`
 
-```javascript
+#### Multi-word options
+
+```js
 grunt.initConfig({
   git: {
-    // 'git log --name-only'
-    log: {
-      nameOnly: true
-    },
-    // 'git commit -na -m "A message"'
-    commit: {
-      m: 'A message',
-      n: true,
-      a: true
+    diff: {
+      options: {
+        nameOnly: true
+      }
     }
   }
 });
 ```
 
-You can also specify `=` style options. Just add `=` to the end of the arg:
+This will run `git diff --name-only`
 
-```javascript
+#### Short options
+
+```js
 grunt.initConfig({
   git: {
-    // 'git show --summary --format=%s'
+    commit: {
+      options: {
+        m: '"Fix stuff"'
+      }
+    }
+  }
+});
+```
+
+This will run `git commit -m "Fix stuff"`
+
+#### Short boolean options
+
+```js
+grunt.initConfig({
+  git: {
+    status: {
+      options: {
+        s: true
+      }
+    }
+  }
+});
+```
+
+This will run `git status -s`
+
+#### Multiple short options grouped together
+
+```js
+grunt.initConfig({
+  git: {
+    commit: {
+      options: {
+        a: true,
+        n: true,
+        m: '"Fix stuff"'
+      }
+    }
+  }
+});
+```
+
+This will run `git commit -an -m "Fix stuff"`
+
+#### Options with equal signs
+
+```js
+grunt.initConfig({
+  git: {
     show: {
-      summary: true,
-      'format=': '%s'
+      options: {
+        'format=': 'short'
+      }
     }
   }
 });
 ```
 
-Sub-commands that aren't options (e.g. "git push origin master", "git checkout foo", "git show HEAD~", etc.) can be specified using the `cmd` key.
+This will run `git show --format=short`
 
-```javascript
+#### Arrays of options
+
+I couldn't find a legitimate git command that would use this, but if such a thing exists, it would work.
+
+```js
 grunt.initConfig({
   git: {
-    // 'git push origin master --dry-run'
+    fake: {
+      options: {
+        a: ['foo', 'bar'],
+        greeting: ['hello', 'goodbye']
+      }
+    }
+  }
+});
+```
+
+This will run `git fake -a foo -a bar --greeting hello --greeting goodbye`, which, as previously mentioned, is nothing.
+
+### Task Options
+
+Simple cli can be configured by specifying any of the following options under `options.simple`.
+
+#### env
+
+Supply additional environment variables to the child process.
+
+```js
+grunt.initConfig({
+  git: {
+    status: {
+      options: {
+        simple: {
+          env: {
+            FOO: 'bar'
+          }
+        }
+      }
+    }
+  }
+});
+```
+
+#### cwd
+
+Set the current working directory for the child process.
+
+```js
+grunt.initConfig({
+  git: {
+    status: {
+      options: {
+        simple: {
+          cwd: './test'
+        }
+      }
+    }
+  }
+});
+```
+
+#### force
+
+If the task fails, don't halt the entire task chain.
+
+```js
+grunt.initConfig({
+  git: {
+    status: {
+      options: {
+        simple: {
+          force: true
+        }
+      }
+    }
+  }
+});
+```
+
+#### onComplete
+
+A callback to handle the stdout and stderr streams. `simple-cli` aggregates the stdout and stderr data output and will supply the final strings to the `onComplete` function. This function should have the signature `function(err, stdout, callback)` where `err` is an error object containing the stderr stream (if any errors were reported) and the code returned by the child process (as `err.code`), `stdout` is a string, and `callback` is a function. The callback must be called with a falsy value to complete the task (calling it with a truthy value - e.g. `1` - will fail the task).
+
+```js
+grunt.initConfig({
+  git: {
+    branch: {
+      options: {
+        simple: {
+          onComplete: function(err, stdout, callback) {
+            if (err) {
+              grunt.fail.fatal(err.message, err.code);
+            } else {
+              grunt.config.set('cli output', stdout);
+              callback();
+            }
+          });
+        }
+      }
+    }
+  }
+});
+```
+
+#### cmd
+
+An alternative sub-command to call on the cli. This is useful when you want to create multiple targets that call the same command with different options/parameters. If this value is present, it will be used instead of the grunt target as the first argument to the executable.
+
+```js
+grunt.initConfig({
+  // Using git as a real example
+  git: {
+    pushOrigin: {
+      options: {
+        simple: {
+          cmd: 'push',
+          args: ['origin', 'master']
+        }
+      }
+    },
+    pushHeroku: {
+      options: {
+        simple: {
+          cmd: 'push',
+          args: 'heroku master'
+        }
+      }
+    }
+  }
+});
+```
+
+Running `grunt git:pushOrigin` will run `git push origin master` and running `grunt git:pushHeroku` will run `git push heroku master`.
+
+#### args
+
+Additional, non-flag arguments to pass to the executable. These can be passed as an array (as in `git:pushOrigin` above) or as a single string with arguments separated by a space (as in `git:pushHeroku` above).
+
+#### rawArgs
+
+`rawArgs` is a catch all for any arguments to git that can't be handled (for whatever reason) with the options above (e.g. the path arguments in some git commands: `git checkout master -- config/production.json`). Anything in `rawArgs` will be concatenated to the end of all the normal args.
+
+```js
+grunt.initConfig({
+  git: {
+    checkout: {
+      options: {
+        simple: {
+          args: ['master'],
+          rawArgs: '-- config/production.json'
+        }
+      }
+    }
+  }
+});
+```
+
+#### debug
+
+Similar to `--dry-run` in many executables. This will log the command that will be spawned in a child process without actually spawning it. Additionally, if you have an onComplete handler, a fake stderr and stdout will be passed to this handler, simulating the real task. If you want to use specific stderr/stdout messages, `debug` can also be an object with `stderr` and `stdout` properties that will be passed to the onComplete handler.
+
+```js
+grunt.initConfig({
+  git: {
+    branch: {
+      options: {
+        simple: {
+          // Invoked with default fake stderr/stdout
+          onComplete: function(err, stdout, callback) {
+            console.log(arguments);
+          },
+          debug: true
+        }
+      }
+    },
+    status: {
+      options: {
+        simple: {
+          // Invoked with 'foo' and 'bar'
+          onComplete: function(err, stdout, callback) {
+            console.log(arguments);
+          },
+          debug: {
+            stderr: 'foo',
+            stdout: 'bar'
+          }
+        }
+      }
+    }
+  }
+});
+```
+
+Additionally, you can pass the `--debug` option to grunt itself to enable the above behavior in an ad hoc manner.
+
+## Dynamic values
+
+Sometimes you just don't know what values you want to supply to for an option until you're ready to use it (for instance, `--message` in a commit task). That makes it hard to put into a task. `simple-cli` supports dynamical values (via interpolation) which can be supplied in any of three ways:
+
+#### via command line options to grunt (e.g. grunt.option)
+
+Supply the value when you call the task itself.
+
+```js
+grunt.initConfig({
+  git: {
     push: {
       options: {
-        dryRun: true
-      },
-      cmd: 'push origin master'
-    }
-  }
-});
-```
-
-It might seem redundant specifying `push` as part of the `cmd` when it's the name of the target, but that's because the `cmd` option doubles as a way to run the same git command with different arguments:
-
-```javascript
-grunt.initConfig({
-  git: {
-    // 'git push origin master'
-    origin: {
-      cmd: 'push origin master'
-    },
-    // 'git push heroku master'
-    heroku: {
-      cmd: 'push heroku master'
-    }
-  }
-});
-```
-
-Additionally, if `cmd` is the configuration you need, you can pass that as the entirety of the task body:
-
-```javascript
-grunt.initConfig({
-  git: {
-    push: 'push origin master'
-  }
-});
-```
-
-Finally, if your usage doesn't fit these formats, you can specify raw arguments to pass to git using the `rawArgs` option:
-
-```javascript
-grunt.initConfig({
-  git: {
-    // 'git checkout master -- config/*.json'
-    checkout: {
-      cmd: 'checkout master',
-      rawArgs: '-- config/*.json'
-    }
-  }
-});
-```
-
-There are also a few non-git related options: `stdio` and `cwd` which are passed as is to `child_process.spawn` (defaults are `inherit` and `process.cwd()` respectivly) and `force`, which you can use for non-critical git commands that should not halt the grunt task chain (like `--force` but on a per task basis). These are under `options` so that they can be specified for all tasks if desired. If you want to turn off `stdio` altogether (which you probably shouldn't do), you can pass `stdio: false`.
-
-```javascript
-grunt.initConfig({
-  git: {
-    options: {
-      cwd: '..',
-      stdio: false
-    },
-    add: {
-      options: {
-        all: true
+        simple: {
+          // You can also do this as a string, but note that simple-cli splits
+          // string args on space, so you wouldn't be able to put space INSIDE
+          // the interpolation. You'd have to say args: '{{remote}} master'
+          args: ['{{ remote }}', 'master']
+        }
       }
     }
   }
 });
 ```
 
-## Coming soon
+If the above was invoked with `grunt git:push --remote origin` the final command would be `git push origin master`.
 
-Filling in options after the fact via prompt (perfect for `git commit --message` for example).
+#### via grunt.config
 
-Ideally, you wouldn't have to do `cmd: 'push origin master'` if the name of the target was `push`. There's no easy way to handle this immediately, but I'd like to improve that eventually.
+This is primarily useful if you want the result of another task to determine the value of an argument. For instance, maybe in another task you say `grunt.config.set('remote', 'heroku')`, then the task above would run `git push heroku master`.
+
+#### via prompt
+
+If `simple-cli` can't find an interpolation value via `grunt.option` or `grunt.config`, it will prompt you for one on the terminal. Thus you could do something like:
+
+```js
+grunt.initConfig({
+  git: {
+    commit: {
+      options: {
+        message: '{{ message }}'
+      }
+    }
+  }
+});
+```
+
+and automate commits, while still supplying an accurate commit message.
+
+## Shortcut configurations
+
+For very simple tasks, you can define the task body as an array or string, rather than as an object, as all the above examples have been.
+
+```js
+grunt.initConfig({
+  git: {
+    // will invoke "git push origin master"
+    origin: ['push', 'origin', 'master'],
+
+    // will invoke "git pull upstream master"
+    upstream: 'pull upstream master'
+  }
+});
