@@ -343,7 +343,7 @@ grunt.initConfig({
 
 Additionally, you can pass the `--debug` option to grunt itself to enable the above behavior in an ad hoc manner.
 
-## Dynamic values
+### Dynamic values
 
 Sometimes you just don't know what values you want to supply to for an option until you're ready to use it (for instance, `--message` in a commit task). That makes it hard to put into a task. `simple-cli` supports dynamical values (via interpolation) which can be supplied in any of three ways:
 
@@ -392,7 +392,7 @@ grunt.initConfig({
 
 and automate commits, while still supplying an accurate commit message.
 
-## Shortcut configurations
+### Shortcut configurations
 
 For very simple tasks, you can define the task body as an array or string, rather than as an object, as all the above examples have been.
 
