@@ -244,7 +244,7 @@ grunt.initConfig({
               grunt.config.set('cli output', stdout);
               callback();
             }
-          });
+          }
         }
       }
     }
